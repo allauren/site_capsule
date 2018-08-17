@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang=fr xmlns:og=http://opengraphprotocol.org/schema/>
+
+<!-- Mirrored from capsule.site/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Aug 2018 15:27:28 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112819642-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'UA-112819642-1');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Bonjour, Capsule</title>
+    <meta property=og:site_name content="Bonjour Capsule">
+    <link rel=icon type=image/png sizes=32x32 href=static/img/icons/favicon-32x32.png>
+    <link rel=icon type=image/png sizes=16x16 href=static/img/icons/favicon-16x16.png>
+    <!--[if IE]><link rel="shortcut icon" href="/static/img/icons/favicon.ico"><![endif]-->
+    <link rel=manifest href=static/manifest.json>
+    <meta name=theme-color content=#4DBA87>
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <meta name=apple-mobile-web-app-title content=Capsule>
+    <link rel=apple-touch-icon href=static/img/icons/apple-touch-icon-152x152.png>
+    <meta name=msapplication-TileImage content=/static/img/icons/msapplication-icon-144x144.png>
+    <meta name=msapplication-TileColor content=#000000>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.min.js"></script>
+    <style media="screen">
+      @font-face {
+        font-family: 'Avant Garde';
+        src: url('static/fonts/ITCAvantGardeStd-Demi.otf');
+        font-weight: 300;
+      }
+      :root {
+        --loader-size: 55px;
+        --loader-rotation-time: 4s;
+      }
+      body, html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin: 0;
+        padding: 0;
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        color: white;
+        overflow: hidden;
+        font-size: 14pt;
+      }
+      .description, .enter {
+        cursor: pointer;
+      }
+      .description {
+        position: absolute;
+        bottom: 30px;
+        left: 45px;
+        padding: 10px 15px;
+        font-size: medium;
+        color: white;
+        font-weight: 600;
+        /* text-align: center; */
+      }
+      .description span:first-of-type {
+        text-decoration: underline;
+      }
+      .description__author {
+        font-weight: 800;
+      }
+      .description__title {
+        font-style: italic;
+      }
+      .description__title::before, .description__title::after {
+        content: '"';
+      }
+      .enter {
+        position: absolute;
+        /* border-radius: 200px 0 0 200px; */
+        font-family: Avant Garde,sans-serif;
+        font-weight: 300;
+        /* border: 2px solid white; */
+        /* border-right: none; */
+        /* background-color: white; */
+        font-size: 1.5rem;
+        bottom: 30px;
+        right: 45px;
+        padding: 10px 15px;
+        width: auto;
+        /* padding: 25px 20px 25px 25px; */
+        text-align: center;
+        font-weight: 500;
+        text-decoration: none;
+        visibility: hidden;
+        opacity: 0;
+        display: inline-block;
+        transition: color 200ms, opacity 1s ease-in-out, box-shadow 200ms;
+      }
+      .enter:hover, .enter, .enter:visited, .enter:focus {
+        color: white;
+      }
+      .enter:hover, .enter:focus {
+        opacity: 1;
+      }
+
+      header {
+        position: absolute;
+        height: 150px;
+        padding-top: 20px;
+      }
+
+      .logo {
+        margin: 20px;
+        max-width: 240px;
+        background-image: url(static/img/logos/logo-white.svg);
+        background-size: cover;
+        background-position: center;
+      }
+      .screen-logo {
+        background-image: url(static/img/logos/logo-white.svg);
+      }
+
+
+      .logo {
+        position: relative;
+        width: 240px;
+        height: 70px;
+      }
+
+      .screen {
+        background: white;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 300ms;
+      }
+
+      /* Loader */
+
+      .loading {
+        width: calc(var(--loader-size) * 1.8);
+        height: calc(var(--loader-size) * 1.8);
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate3D(-50%, -50%, 0);
+        border-radius: 100%;
+        background: rgba(0, 0, 0, .3);
+        z-index: 10;
+        opacity: 0;
+      }
+
+      .loading .planet {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-image: url(static/img/logos/rock.svg);
+        background-repeat: no-repeat;
+        /*background-attachment: fixed;*/
+        background-position: center;
+        background-size: contain;
+        width: var(--loader-size);
+        height: var(--loader-size);
+      }
+
+      .dot {
+        position: absolute;
+        bottom: -5%;
+        left: -5%;
+        -webkit-animation: xAxis var(--loader-rotation-time) infinite cubic-bezier(.15,-0.21,1,1);
+        animation: xAxis var(--loader-rotation-time) infinite cubic-bezier(.15,-0.21,1,1);
+        width: 10%;
+        height: 10%;
+      }
+
+      .dot::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-color: #fff;
+        -webkit-animation: yAxis var(--loader-rotation-time) infinite cubic-bezier(0,0,.82,1.16);
+        animation: yAxis var(--loader-rotation-time) infinite cubic-bezier(0,0,.82,1.16);
+      }
+
+      @-webkit-keyframes yAxis {
+        50% {
+          -webkit-animation-timing-function: cubic-bezier(0,0,.82,1.16);
+          animation-timing-function: cubic-bezier(0,0,.82,1.16);
+          -webkit-transform: translateY(calc(var(--loader-size) * -1));
+          transform: translateY(calc(var(--loader-size) * -1));
+        }
+      }
+
+      @keyframes yAxis {
+        50% {
+          -webkit-animation-timing-function: cubic-bezier(0,0,.82,1.16);
+          animation-timing-function: cubic-bezier(0,0,.82,1.16);
+          -webkit-transform: translateY(calc(var(--loader-size) * -1));
+          transform: translateY(calc(var(--loader-size) * -1));
+        }
+      }
+
+      @-webkit-keyframes xAxis {
+        50% {
+          -webkit-animation-timing-function: cubic-bezier(.15,-0.21,1,1);
+          animation-timing-function: cubic-bezier(.15,-0.21,1,1);
+          -webkit-transform: translateX(var(--loader-size));
+          transform: translateX(var(--loader-size));
+        }
+      }
+
+      @keyframes xAxis {
+        50% {
+          -webkit-animation-timing-function: cubic-bezier(.15,-0.21,1,1);
+          animation-timing-function: cubic-bezier(.15,-0.21,1,1);
+          -webkit-transform: translateX(var(--loader-size));
+          transform: translateX(var(--loader-size));
+        }
+      }
+
+      @media all and (max-width: 700px) {
+        .description {
+          top: 40px;
+          right: 20px;
+          bottom: unset;
+          left: unset;
+          transform-origin: bottom right;
+          transform: rotate(-90deg);
+        }
+      }
+  </style>
+</head>
+
+<body>
+  <noscript><p>Copyright (c) 2017-2018 Bonjour Capsule All Rights Reserved.</p><div class=noscript-main><div id=noscript-main__logo><img class=logo__logo src=static/img/logos/logo-black.svg alt="Logo"></div></div><p><span>Bonjour,<br><br>Pour profiter du contenu complet de notre site, nous vous invitons à désactiver votre bloqueur de scripts.</span></p></noscript>
+  <script language="javascript" type="text/javascript" src="sci-fi.js"></script>
+  <header>
+    <div class='layout logo'></div>
+  </header>
+  <div class='screen'>
+      <header>
+        <div class='screen-logo logo'></div>
+      </header>
+      <div class='loading'>
+        <div class='planet'>
+          <div class='dot'></div>
+        </div>
+      </div>
+  </div>
+  <div class='layout description'>juin 2018<br><span>Script</span> : <span class='description__title'>Science fiction</span> <span class='description__author'>Paul Amicel</span></div>
+  <a class='layout enter' href="capsule.html">Entrer &rarr; &rarr; &rarr;</a>
+</body>
+
+<script>
+  (function () {
+    var screen = document.getElementsByClassName('screen')[0];
+    var enter = document.getElementsByClassName('enter')[0]
+    var layout = document.getElementsByClassName('layout');
+    var loader = document.getElementsByClassName('loading')[0];
+    var index = 0;
+    var writing = false;
+    var naturalCoef = .8;
+    var shuffled = false;
+    var alphabet = "[]()+!";
+    var original = 'Entrer \u2192 \u2192 \u2192';
+
+    function hideScreen () {
+      screen.style.opacity = 0;
+      screen.style.visibility = 'hidden';
+    }
+
+    function appear () {
+      window.setTimeout( function () {
+        hideScreen();
+        window.setTimeout(function () {
+          // Prepare for exit black screen with loader
+          screen.style.background = 'black';
+          // Show enter button
+          enter.style.setProperty('visibility', 'visible');
+          enter.style.setProperty('opacity', 1);
+          showLayout();
+        }, 200);
+      }, 100);
+    }
+    appear();
+    window.addEventListener( "pageshow", function () { hideScreen(); showLayout(); });
+
+    // TODO Remake this all things, its all fucked up.
+    function getBack () {
+      // S'arrête si le bouton est déjà en train d'être écrit
+      if (writing) {
+        return;
+      }
+      // Lève le flag écriture
+      writing = true;
+      var current = enter.textContent;
+
+      function timeOutGenerator(newText, time) {
+        window.setTimeout(function () {
+          enter.textContent = newText;
+        }, time);
+      }
+
+      var timeInterval = 30;
+      var i = 0, j = 0, str = current;
+      for (; i < current.length; i++) {
+        if (alphabet.indexOf(current[i]) !== -1) {        // If current[i] is a weird character :
+          str = str.slice(0, j) + current.slice(i + 1);   // Keep str identical up to j. Append current from i + 1 to it.
+        } else {                                          // Otherwise :
+          j++;                                            // Only increment j (i.e. validate the new character as part of str);
+        }
+        timeOutGenerator(str, i * timeInterval * naturalCoef);
+      }
+      for (j = 0; j < original.length; j++) {             // Reuse j as index in original.
+        timeOutGenerator(original.slice(0, j + 1) + str.slice(j + 1), (i + j) * timeInterval * naturalCoef);
+      }
+      window.setTimeout(function () {
+        writing = false;
+        shuffled = false;
+      }, i * timeInterval * naturalCoef);
+    }
+
+    enter.addEventListener('mouseover', function () {
+      if (shuffled)
+        getBack();
+    });
+
+    window.addEventListener('wheel', function (event) {
+      var rand1 = Math.round(Math.random() * 100);
+      var rand2 = Math.round(Math.random() * 100);
+      var index = rand1 % enter.textContent.length;
+      var char = alphabet[rand2 % 6];
+      if (layoutHidden()) showLayout();
+      if (event.deltaY !== 0)
+        enter.textContent = enter.textContent.length < 50 ? enter.textContent.slice(0, index) + char + enter.textContent.slice(index) : enter.textContent.slice(0, index) + char + enter.textContent.slice(index + 1);
+      shuffled = true;
+    })
+    
+    function hideLayout () {
+      for (var i = 0; i < layout.length; i++) {
+        layout[i].style.transition = 'opacity 300ms';
+        layout[i].style.opacity = '0';
+      }
+    }
+    function showLayout () {
+      for (var i = 0; i < layout.length; i++) {
+        layout[i].style.transition = 'opacity 300ms';
+        layout[i].style.opacity = '1';
+      }
+    }
+
+    function layoutHidden () {
+      return (window.getComputedStyle(layout[0]).getPropertyValue("opacity") !== '1');
+    }
+
+    var description = document.getElementsByClassName('description')[0];
+    description.addEventListener('click', function (event) {
+      if (!layoutHidden()) {
+        hideLayout();
+      } else {
+        showLayout();
+      }
+      event.stopPropagation();
+    });
+    window.addEventListener('click', function (event) {
+      if (layoutHidden())
+        showLayout();
+      else
+        hideLayout();
+    });
+
+    enter.addEventListener('click', function (event) {
+      event.preventDefault();
+      hideLayout();
+      window.setTimeout(function () {
+        screen.style.opacity = 1;
+        screen.style.visibility = 'visible';
+        window.setTimeout(function () {
+          // If wait is too long, loader appears :
+          window.setTimeout(function () {
+            loader.style.opacity = '1';
+          }, 200);
+          window.location = 'capsule.html';
+        }, 150);
+      }, 150);
+    });
+  })();
+</script>
+
+
+<!-- Mirrored from capsule.site/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Aug 2018 15:27:38 GMT -->
+</html>
