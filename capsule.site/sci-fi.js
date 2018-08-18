@@ -88,9 +88,9 @@ new p5(function (p5) {
   var boids;
   var n = 10;
 
-  var INIT_H = 202;
-  var INIT_S = 40;
-  var INIT_B = 100;
+  var INIT_H = 0;
+  var INIT_S = 0;
+  var INIT_B = 0;
   document.getElementsByTagName('body')[0].style.backgroundColor = 'hsb(' + h + ', ' + s + ', ' + b + ')';
   var h = INIT_H;
   var s = INIT_S;
